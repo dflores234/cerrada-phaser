@@ -27,8 +27,9 @@ src/
     types.ts        Tipos del caso y del estado
     Director.ts     Reloj, rutinas, pistas, sospecha, honor, eventos, finales
     Pathfinding.ts  BFS sobre rejilla para que los NPC caminen
+    zones.ts        En qué casa, patio o calle cae un punto del mapa
     validateCase.ts Revisa que un caso cuadre consigo mismo y con su mapa
-    Director.test.ts, validateCase.test.ts
+    *.test.ts       Director, Pathfinding, zones y validateCase
   data/
     caso-helena.json  TODO el contenido del caso: pistas, objetos, vecinos, rutinas, eventos
   scenes/
@@ -65,6 +66,9 @@ src/
   que es lo que te dice si el dueño está dentro. El techo se desvanece al entrar.
 - Registrar un objeto cuesta 15 min; preguntar 10; forzar una puerta 20; esperar 60.
 - Si un vecino te ve registrando en su casa: +25 desconfianza. Forzando una puerta: +30.
-- A 60 de desconfianza dejan de hablarte; a 70, Marisa limpia su casa y pierdes dos pruebas.
+- A 60 de desconfianza dejan de hablarte, y te avisa cuando alguien cruza ese punto; a 70,
+  Marisa limpia su casa y pierdes dos pruebas.
+- Antes de esperar una hora se te dice quién vuelve a casa y quién sale en ese rato.
+- El cuaderno dice, pista por pista, qué preguntas y qué registros te quedan por abrir con ella.
 - Presionar (chantaje) saca más verdad, +30 desconfianza, −15 honor. El honor cambia el final.
 - Cerca de medianoche pasan cosas que solo ves si estás ahí; una pista desaparece a las 00:05.

@@ -1,4 +1,4 @@
-import type { CaseData, DirectorEvent, Ending, GameState, WorldQuery } from "./types";
+import type { CaseData, DirectorEvent, Ending, GameState, Minute, WorldQuery } from "./types";
 
 type Listener = (e: DirectorEvent) => void;
 
@@ -33,8 +33,8 @@ export class Director {
   }
   isHome(npc: string) { return this.placeOf(npc) === "home"; }
   doorOpen(house: string) { return this.isHome(this.data.houses[house].owner) || this.state.forced.includes(house); }
-  clock() {
-    const h = Math.floor(this.state.time / 60) % 24, m = this.state.time % 60;
+  clock(time = this.state.time) {
+    const h = Math.floor(time / 60) % 24, m = time % 60;
     return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
   }
   dayLabel() { return this.state.time < 1440 ? "domingo" : "lunes"; }
@@ -54,6 +54,35 @@ export class Director {
     return this.data.npcs[npc].questions.filter((q) => !q.needs || this.has(q.needs));
   }
   refuses(npc: string) { return this.state.sus[npc] >= this.data.suspicion.refuseAt; }
+
+  /** Qué cambia de sitio en los próximos minutos, pero solo lo que decide si una puerta estará abierta. */
+  upcoming(minutes: number) {
+    const out: { npc: string; at: Minute; home: boolean }[] = [];
+    for (const npc of Object.keys(this.data.npcs)) {
+      let was = this.isHome(npc);
+      for (const [m] of this.data.npcs[npc].schedule) {
+        if (m <= this.state.time || m > this.state.time + minutes) continue;
+        const home = this.placeOf(npc, m) === "home";
+        if (home !== was) out.push({ npc, at: m, home });
+        was = home;
+      }
+    }
+    return out.sort((a, b) => a.at - b.at);
+  }
+
+  /** Qué puertas abre todavía una pista o una respuesta: lo que te queda por usar de ella. */
+  unlocks(token: string) {
+    const out: string[] = [];
+    for (const [id, it] of Object.entries(this.data.items)) {
+      if (it.needs?.includes(token) && !this.state.found.includes(id)) out.push(it.label);
+    }
+    for (const npc of Object.keys(this.data.npcs)) {
+      for (const q of this.data.npcs[npc].questions) {
+        if (q.needs === token && !this.state.asked.includes(q.id)) out.push(`${this.data.npcs[npc].name}: «${q.q}»`);
+      }
+    }
+    return out;
+  }
 
   // ---------- Tiempo ----------
   advance(minutes: number, world?: WorldQuery) {
@@ -93,6 +122,14 @@ export class Director {
   }
 
   // ---------- Acciones ----------
+  /** Sube la desconfianza de un vecino y avisa si con esto deja de hablarte: hasta ahora
+   *  solo se podía averiguar yendo a tocarle la puerta, que es justo lo que la sube. */
+  private raise(npc: string, amount: number) {
+    const s = this.state, before = s.sus[npc], limit = this.data.suspicion.refuseAt;
+    s.sus[npc] = Math.min(100, before + amount);
+    if (before < limit && s.sus[npc] >= limit) this.emit({ kind: "toast", text: `${this.data.npcs[npc].name} ya no te va a abrir la puerta.` });
+  }
+
   examine(itemId: string, world: WorldQuery) {
     const s = this.state, it = this.data.items[itemId], clue = this.data.clues[itemId];
     const done = s.found.includes(itemId);
@@ -104,7 +141,7 @@ export class Director {
     if (world.playerZone() !== "out") {
       for (const n of world.witnesses(7)) {
         if (this.data.npcs[n].noHouse) continue;
-        s.sus[n] = Math.min(100, s.sus[n] + this.data.suspicion.seenSearching);
+        this.raise(n, this.data.suspicion.seenSearching);
         lines.push(`${this.data.npcs[n].name} te ve desde la puerta. No dice nada. No hace falta.`);
       }
     }
@@ -120,7 +157,7 @@ export class Director {
     // A diferencia de registrar, aquí no se salta a los `noHouse`: reventar una puerta
     // escandaliza a cualquiera que lo vea, tenga casa en la Cerrada o no.
     for (const n of world.witnesses(8)) {
-      s.sus[n] = Math.min(100, s.sus[n] + this.data.suspicion.seenForcing);
+      this.raise(n, this.data.suspicion.seenForcing);
       lines.push(`${this.data.npcs[n].name} te mira desde la calle.`);
     }
     this.advance(this.data.costs.force, world);
@@ -131,7 +168,7 @@ export class Director {
     const s = this.state, q = this.data.npcs[npc].questions.find((x) => x.id === qid)!;
     if (!s.asked.includes(qid)) {
       s.asked.push(qid);
-      if (q.needs) s.sus[npc] = Math.min(100, s.sus[npc] + this.data.suspicion.confront);
+      if (q.needs) this.raise(npc, this.data.suspicion.confront);
       this.advance(this.data.costs.ask, world);
     }
     return q.a;
@@ -143,7 +180,7 @@ export class Director {
     if (!s.asked.includes(qid)) s.asked.push(qid);
     if (!s.asked.includes(key)) {
       s.asked.push(key);
-      s.sus[npc] = Math.min(100, s.sus[npc] + this.data.suspicion.press);
+      this.raise(npc, this.data.suspicion.press);
       s.honor = Math.max(0, s.honor - this.data.honor.pressCost);
       this.advance(this.data.costs.press, world);
     }

@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { Director } from "../core/Director";
 import { findPath } from "../core/Pathfinding";
+import { zoneAt } from "../core/zones";
 import type { CaseData, GameState, WorldQuery } from "../core/types";
 import { Dialog } from "../ui/Dialog";
 import caso from "../data/caso-helena.json";
@@ -148,11 +149,7 @@ export class WorldScene extends Phaser.Scene {
     if (!isNpc) { const d = this.doorTile(tx, ty); if (d && !this.director.doorOpen(d)) return false; }
     return true;
   }
-  zoneOf(x: number, y: number): string {
-    for (const id in this.houses) if (this.houses[id].contains(x, y)) return id;
-    if (this.yard.contains(x, y)) return "yard";
-    return "out";
-  }
+  zoneOf(x: number, y: number): string { return zoneAt(this.houses, this.yard, x, y); }
   private world(): WorldQuery {
     const px = this.player.x, py = this.player.y;
     return {
@@ -225,7 +222,7 @@ export class WorldScene extends Phaser.Scene {
     for (const id in this.npcs) {
       const n = this.npcs[id]; if (n.hidden) continue;
       const d = Phaser.Math.Distance.Between(px, py, n.sprite.x, n.sprite.y) / T;
-      if (d < bd) { bd = d; best = { kind: "npc", id, label: "Hablar con " + DATA.npcs[id].name }; }
+      if (d < bd) { bd = d; best = { kind: "npc", id, label: "Hablar con " + DATA.npcs[id].name + (this.director.refuses(id) ? " · ya no te habla" : "") }; }
     }
     for (const id in this.doors) {
       const dr = this.doors[id], d = Phaser.Math.Distance.Between(px, py, dr.x * T + T / 2, dr.y * T + T / 2) / T;
@@ -247,14 +244,17 @@ export class WorldScene extends Phaser.Scene {
       (qid) => { const lines = this.director.ask(npc, qid, this.world()); const q = DATA.npcs[npc].questions.find((x) => x.id === qid)!; this.ui.answer(npc, q.q, lines, false, this.unlockText(qid), () => this.talk(npc)); });
   }
   private unlockText(key: string) {
-    const u = Object.entries(DATA.items).filter(([id, it]) => it.needs?.includes(key) && !this.director.state.found.includes(id)).map(([, it]) => it.label);
-    return u.length ? "Ahora puedes registrar: " + u.join(", ") : null;
+    const u = this.director.unlocks(key);
+    return u.length ? "Esto te abre: " + u.join(" · ") : null;
   }
 
   // ---------- HUD / DOM ----------
   private bindDom() {
     const $ = (id: string) => document.getElementById(id)!;
-    $("bWait").onclick = () => { if (this.ui.paused) return; this.director.advance(DATA.costs.wait, this.world()); this.snapNpcs(); this.ui.toast("Pasa una hora."); };
+    $("bWait").onclick = () => {
+      if (this.ui.paused) return;
+      this.ui.wait(DATA.costs.wait, () => { this.director.advance(DATA.costs.wait, this.world()); this.snapNpcs(); });
+    };
     $("bNotes").onclick = () => { if (!this.ui.paused) this.ui.notes(() => this.reset()); };
     $("bAccuse").onclick = () => { if (!this.ui.paused) this.ui.accuse(); };
     $("act").addEventListener("pointerdown", (e) => { e.preventDefault(); this.interact(); });

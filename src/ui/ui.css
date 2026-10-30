@@ -39,7 +39,7 @@ button{font:inherit;color:inherit}
 .q.done{color:var(--muted)}.q.new{border-left-color:var(--blood)}.q.new::after{content:" · nueva";color:var(--blood);font-size:.8rem}
 .q.press{color:var(--blood);font-style:italic;margin-top:-4px;font-size:.92rem}
 .note{border-left:3px solid var(--water);padding:3px 0 3px 12px;margin:0 0 14px}
-.note.key{border-left-color:var(--blood)}.note b{font-family:var(--display);font-size:1.05rem;display:block}.note p{color:var(--muted);margin:2px 0 0}
+.note.key{border-left-color:var(--blood)}.note .use{color:var(--blood);font-size:.85rem;margin:6px 0 0}.note b{font-family:var(--display);font-size:1.05rem;display:block}.note p{color:var(--muted);margin:2px 0 0}
 fieldset{border:0;padding:0;margin:0 0 18px}legend{font-family:var(--display);font-size:1.15rem;font-weight:600;margin-bottom:6px}
 .opt{display:flex;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;cursor:pointer;background:#0c1d20}
 .opt:has(input:checked){border-color:var(--blood);background:var(--blood-soft)}.opt input{margin-top:4px;accent-color:var(--blood)}

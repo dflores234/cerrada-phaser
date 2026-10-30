@@ -1,4 +1,5 @@
 import type { CaseData } from "./types";
+import { zoneAt, type Rect } from "./zones";
 
 /** Lo mínimo que necesitamos del mapa de Tiled para comprobar que el caso cuadra con él. */
 export interface TiledObject { name: string; type: string; x: number; y: number; width?: number; height?: number }
@@ -134,12 +135,10 @@ function checkMap(data: CaseData, map: TiledMap, npcIds: string[], itemIds: Set<
   // donde está el vecino: hay que resolver las coordenadas como hace WorldScene.zoneOf.
   const T = map.tilewidth;
   const byName = (type: string, name: string) => objects.find((o) => o.type === type && o.name === name);
-  const inside = (o: TiledObject, x: number, y: number) => x >= o.x && x < o.x + (o.width ?? 0) && y >= o.y && y < o.y + (o.height ?? 0);
-  const zoneAt = (x: number, y: number) => {
-    for (const id of Object.keys(data.houses)) { const h = byName("house", id); if (h && inside(h, x, y)) return id; }
-    const yard = byName("zone", "yard");
-    return yard && inside(yard, x, y) ? "yard" : "out";
-  };
+  const rect = (o: TiledObject): Rect => ({ x: o.x, y: o.y, width: o.width ?? 0, height: o.height ?? 0 });
+  const houseRects: Record<string, Rect> = {};
+  for (const id of Object.keys(data.houses)) { const h = byName("house", id); if (h) houseRects[id] = rect(h); }
+  const yardObj = byName("zone", "yard");
 
   for (const ev of data.events) {
     if (ev.type !== "witness") continue;
@@ -148,7 +147,7 @@ function checkMap(data: CaseData, map: TiledMap, npcIds: string[], itemIds: Set<
       if (place === "away") { out.push(`el evento "${ev.id}" espera a ${n}, que a esa hora no está en la Cerrada`); continue; }
       const spot = byName("spot", place === "home" ? "home_" + n : place);
       if (!spot) continue; // ya lo reporta la comprobación de puntos
-      const zone = zoneAt(Math.floor(spot.x / T) * T + T / 2, Math.floor(spot.y / T) * T + T / 2);
+      const zone = zoneAt(houseRects, yardObj && rect(yardObj), Math.floor(spot.x / T) * T + T / 2, Math.floor(spot.y / T) * T + T / 2);
       if (zone !== ev.zone) out.push(`el evento "${ev.id}" dice ocurrir en "${ev.zone}" pero a esa hora ${n} está en "${zone}"`);
     }
   }

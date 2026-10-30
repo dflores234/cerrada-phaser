@@ -68,6 +68,45 @@ describe("Director", () => {
     expect(dark.accuse("marisa", "drug", "secret")).toBe("perfect-dark");
   });
 
+  it("avisa de quién entra y quién sale en la próxima hora", () => {
+    const d = new Director(data);
+    d.state.time = 590; // Marisa sale a las 10:00
+    expect(d.upcoming(60)).toEqual([{ npc: "marisa", at: 600, home: false }]);
+  });
+
+  it("solo cuenta los cambios que abren o cierran una puerta", () => {
+    const d = new Director(data);
+    d.state.time = 830;
+    const next = d.upcoming(120);
+    expect(next.map((c) => c.at)).toEqual([...next.map((c) => c.at)].sort((a, b) => a - b));
+    // Aurelio cambia de sitio a las 15:00, pero no tiene casa: no cambia ninguna puerta.
+    expect(next.some((c) => c.npc === "aurelio")).toBe(false);
+    expect(next).toContainEqual({ npc: "marisa", at: 840, home: false });
+    expect(next).toContainEqual({ npc: "marisa", at: 900, home: true });
+  });
+
+  it("dice qué le queda por abrir a una pista", () => {
+    const d = new Director(data);
+    d.state.found.push("copa");
+    expect(d.unlocks("copa")).toEqual(["Marisa Ocampo: «Encontré una de tus copas junto a la alberca.»"]);
+    d.ask("marisa", "q_m3");
+    expect(d.unlocks("copa")).toEqual([]);
+  });
+
+  it("avisa cuando un vecino deja de abrirte la puerta", () => {
+    const d = new Director(data);
+    const toasts: string[] = [];
+    d.on((e) => { if (e.kind === "toast") toasts.push(e.text); });
+    const seen: WorldQuery = { ...nobody, playerZone: () => "marisa", witnesses: () => ["marisa"] };
+    d.examine("vitrina", seen);
+    d.examine("ceniza", seen);
+    expect(d.state.sus.marisa).toBe(50);
+    expect(toasts).toEqual([]);
+    d.examine("guantes", seen); // cruza el umbral de 60
+    expect(toasts).toContain("Marisa Ocampo ya no te va a abrir la puerta.");
+    expect(d.refuses("marisa")).toBe(true);
+  });
+
   it("el tiempo se acaba", () => {
     const d = new Director(data);
     d.advance(5000, nobody);

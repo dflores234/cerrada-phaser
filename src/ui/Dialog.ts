@@ -30,6 +30,18 @@ export class Dialog {
     this.open(`<p class="who">${this.esc(title)}</p>${lines.map((l) => `<p>${this.esc(l)}</p>`).join("")}${gain ? `<p class="gain">${this.esc(gain)}</p>` : ""}<div class="actions"><button class="ghost" data-close>Seguir</button></div>`);
   }
 
+  /** Esperar deja de ser un botón a ciegas: dice a quién vas a encontrar en casa y a quién no. */
+  wait(minutes: number, onConfirm: () => void) {
+    const d = this.d, changes = d.upcoming(minutes);
+    this.open(`<p class="who">Dejar pasar la hora</p>
+<p>Serían las ${d.clock(d.state.time + minutes)}.</p>
+${changes.length
+      ? `<p class="sub">En ese rato:</p>` + changes.map((c) => `<p>${this.esc(d.data.npcs[c.npc].name)} ${c.home ? "vuelve a casa" : "sale de casa"} a las ${d.clock(c.at)}.</p>`).join("")
+      : `<p class="sub">Nadie se mueve de donde está.</p>`}
+<div class="actions"><button class="ghost" data-close>Mejor no</button><button class="primary" id="wGo">Esperar</button></div>`);
+    this.card.querySelector<HTMLElement>("#wGo")!.onclick = () => { this.close(); onConfirm(); };
+  }
+
   toast(text: string) {
     const t = document.getElementById("toast")!;
     t.textContent = text; t.classList.add("on");
@@ -96,7 +108,12 @@ export class Dialog {
     const list = Object.keys(d.data.clues).filter((k) => s.found.includes(k));
     const talks: { p: string; a: string }[] = [];
     for (const id in d.data.npcs) for (const q of d.data.npcs[id].questions) if (s.asked.includes(q.id)) talks.push({ p: d.data.npcs[id].name, a: q.a.filter((x) => !x.startsWith("*")).join(" ") });
-    this.open(`<h2>Tu cuaderno</h2>${list.length ? list.map((k) => `<div class="note ${d.data.clues[k].key ? "key" : ""}"><b>${d.data.clues[k].title}</b><p>${d.data.clues[k].text}</p></div>`).join("") : `<p class="sub">Todavía no has encontrado nada.</p>`}
+    const note = (k: string) => {
+      const use = d.unlocks(k);
+      return `<div class="note ${d.data.clues[k].key ? "key" : ""}"><b>${d.data.clues[k].title}</b><p>${d.data.clues[k].text}</p>` +
+        (use.length ? `<p class="use">Te queda por usarla en: ${this.esc(use.join(" · "))}</p>` : "") + `</div>`;
+    };
+    this.open(`<h2>Tu cuaderno</h2>${list.length ? list.map(note).join("") : `<p class="sub">Todavía no has encontrado nada.</p>`}
 ${talks.length ? `<h2 style="font-size:1.3rem">Lo que te dijeron</h2>` + talks.map((t) => `<div class="note"><b>${t.p}</b><p>«${this.esc(t.a)}»</p></div>`).join("") : ""}
 <div class="actions"><button class="ghost" id="nReset">Nueva partida</button><button class="primary" data-close>Cerrar</button></div>`);
     this.card.querySelector<HTMLElement>("#nReset")!.onclick = () => { if (confirm("¿Empezar de nuevo? Se borrará tu avance.")) onReset(); this.close(); };
