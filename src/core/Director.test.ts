@@ -48,6 +48,18 @@ describe("Director", () => {
     expect(d.state.found).toContain("recorte");
   });
 
+  it("una escena solo se ve desde la zona donde ocurre", () => {
+    const at = (zone: string): WorldQuery => ({ playerZone: () => zone, distanceTo: () => 1, witnesses: () => [] });
+    const d = new Director(data);
+    d.state.time = 1430; // Marisa cruza el patio de Helena
+    d.checkWitness(at("out"));
+    expect(d.state.found).not.toContain("testigo");
+    d.checkWitness(at("marisa"));
+    expect(d.state.found).not.toContain("testigo");
+    d.checkWitness(at("yard"));
+    expect(d.state.found).toContain("testigo");
+  });
+
   it("acusar: finales", () => {
     expect(new Director(data).accuse("lucia", "drug", "secret")).toBe("wrong:lucia");
     expect(new Director(data).accuse("marisa", "push", "secret")).toBe("partial");

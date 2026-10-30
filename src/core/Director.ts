@@ -84,7 +84,7 @@ export class Director {
     for (const ev of this.data.events) {
       if (ev.type !== "witness" || s.found.includes(ev.clue)) continue;
       if (s.time < ev.from || s.time > ev.to) continue;
-      const ok = ev.npcs.every((n) => world.distanceTo(n) < ev.radius) && (ev.zone === "out" ? world.playerZone() !== "yard" : true);
+      const ok = ev.npcs.every((n) => world.distanceTo(n) < ev.radius) && world.playerZone() === ev.zone;
       if (!ok) continue;
       s.found.push(ev.clue);
       this.emit({ kind: "clue", clue: ev.clue });
@@ -97,7 +97,7 @@ export class Director {
     const s = this.state, it = this.data.items[itemId], clue = this.data.clues[itemId];
     const done = s.found.includes(itemId);
     if (done) { this.emit({ kind: "scene", title: it.label, lines: [it.text, clue.text] }); return; }
-    if (s.gone.includes(itemId)) { this.advance(10, world); this.emit({ kind: "scene", title: it.label, lines: [it.gone ?? "Ya no hay nada."] }); return; }
+    if (s.gone.includes(itemId)) { this.advance(this.data.costs.examine, world); this.emit({ kind: "scene", title: it.label, lines: [it.gone ?? "Ya no hay nada."] }); return; }
     if (it.needs && !it.needs.some((n) => this.has(n))) { this.emit({ kind: "scene", title: "Todavía no", lines: [it.lock ?? "Todavía no."] }); return; }
     s.found.push(itemId);
     const lines = [it.text];
@@ -117,6 +117,8 @@ export class Director {
     const s = this.state;
     s.forced.push(house);
     const lines = ["Veinte minutos con una tarjeta y una horquilla. La puerta cede."];
+    // A diferencia de registrar, aquí no se salta a los `noHouse`: reventar una puerta
+    // escandaliza a cualquiera que lo vea, tenga casa en la Cerrada o no.
     for (const n of world.witnesses(8)) {
       s.sus[n] = Math.min(100, s.sus[n] + this.data.suspicion.seenForcing);
       lines.push(`${this.data.npcs[n].name} te mira desde la calle.`);

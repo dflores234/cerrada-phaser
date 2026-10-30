@@ -32,6 +32,7 @@ export class WorldScene extends Phaser.Scene {
   private night!: Phaser.GameObjects.RenderTexture;
   private clockAcc = 0;
   private target: Target | null = null;
+  private hadSave = false;
 
   constructor() { super("world"); }
 
@@ -43,7 +44,9 @@ export class WorldScene extends Phaser.Scene {
 
   create() {
     // ----- Director + UI -----
-    this.director = new Director(DATA, this.loadState());
+    const saved = this.loadState();
+    this.hadSave = !!saved;
+    this.director = new Director(DATA, saved);
     this.ui = new Dialog(this.director);
     this.ui.onClose = () => this.renderHud();
     this.director.on((e) => {
@@ -89,8 +92,8 @@ export class WorldScene extends Phaser.Scene {
     // ----- Personajes -----
     this.player = this.person("player");
     const [px, py] = this.spots.player; this.player.setPosition(px * T + T / 2, py * T + T / 2);
-    const st = this.director.state as GameState & { px?: number; py?: number };
-    if (st.px) this.player.setPosition(st.px, st.py!);
+    const st = this.director.state;
+    if (st.px !== undefined && st.py !== undefined) this.player.setPosition(st.px, st.py);
     for (const id in DATA.npcs) {
       const n = DATA.npcs[id];
       const s = this.person(id);
@@ -119,7 +122,8 @@ export class WorldScene extends Phaser.Scene {
 
     this.renderHud();
     if (this.director.state.ended) this.ui.ending(this.director.state.ended, () => this.reset());
-    else if (!this.director.state.flags.intro) { this.director.state.flags.intro = true; this.ui.intro(() => this.reset()); }
+    else if (this.hadSave) this.ui.resume(() => this.reset());
+    else this.ui.intro();
   }
 
   // ---------- Helpers ----------
@@ -272,7 +276,7 @@ export class WorldScene extends Phaser.Scene {
   private loadState(): Partial<GameState> | undefined {
     try { const r = localStorage.getItem(SAVE_KEY); return r ? JSON.parse(r) : undefined; } catch { return undefined; }
   }
-  private savePos() { (this.director.state as any).px = this.player.x; (this.director.state as any).py = this.player.y; }
+  private savePos() { const s = this.director.state; s.px = this.player.x; s.py = this.player.y; }
   private save() { try { this.savePos(); localStorage.setItem(SAVE_KEY, JSON.stringify(this.director.state)); } catch { /* sin almacenamiento */ } }
   private reset() { try { localStorage.removeItem(SAVE_KEY); } catch { /* */ } this.scene.restart(); }
 

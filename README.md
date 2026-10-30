@@ -27,7 +27,8 @@ src/
     types.ts        Tipos del caso y del estado
     Director.ts     Reloj, rutinas, pistas, sospecha, honor, eventos, finales
     Pathfinding.ts  BFS sobre rejilla para que los NPC caminen
-    Director.test.ts
+    validateCase.ts Revisa que un caso cuadre consigo mismo y con su mapa
+    Director.test.ts, validateCase.test.ts
   data/
     caso-helena.json  TODO el contenido del caso: pistas, objetos, vecinos, rutinas, eventos
   scenes/
@@ -50,7 +51,10 @@ src/
 3. **Diálogos.** Las preguntas viven en el JSON. Las líneas que empiezan con `*` son narración
    (no diálogo). Para árboles complejos, integra Ink (`inkjs`) o Yarn.
 4. **Nuevos casos.** Un caso es un JSON con el mismo esquema (`CaseData`). El Director no sabe
-   nada de Helena ni de Marisa; todo sale de `caso-helena.json`.
+   nada de Helena ni de Marisa; todo sale de `caso-helena.json`. Antes de jugarlo, pásalo por
+   `validateCase(caso, mapa)`: comprueba que cada `needs`, pista, objeto, puerta y punto del
+   mapa exista de verdad, que las rutinas vayan en orden, que los eventos citen a la gente donde
+   está y que no quede nada inalcanzable. `npm test` ya lo hace con el caso de Helena.
 5. **Servidor.** `Director` corre igual en Node. Para multijugador o guardado en la nube,
    un servidor con WebSockets puede ser la fuente de verdad del estado y los clientes solo renderizan.
 6. **PWA.** Añade `vite-plugin-pwa` para que se instale en el celular y funcione sin conexión.

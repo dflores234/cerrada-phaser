@@ -1,6 +1,8 @@
 export type Minute = number;
 
 export interface Clue { title: string; text: string; key?: boolean }
+/** `needs` se cumple con CUALQUIERA de sus fichas: son caminos alternativos hacia el mismo objeto,
+ *  no requisitos acumulables. Una ficha es una pista, una pregunta o "p_<pregunta>" (haberla presionado). */
 export interface Item { label: string; text: string; gone?: string; needs?: string[]; lock?: string }
 export interface Question { id: string; q: string; a: string[]; needs?: string; press?: string[] }
 export interface Npc {
@@ -32,6 +34,8 @@ export type Ending = "perfect" | "perfect-dark" | "perfect-light" | "partial" | 
 export interface GameState {
   time: Minute; found: string[]; asked: string[]; gone: string[]; forced: string[];
   sus: Record<string, number>; honor: number; ended: Ending | null; flags: Record<string, boolean>;
+  /** Dónde se quedó el jugador. Lo escribe la escena para poder retomar la partida donde iba. */
+  px?: number; py?: number;
 }
 
 /** Lo que el director necesita saber del mundo para resolver eventos. */

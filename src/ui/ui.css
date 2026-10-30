@@ -45,3 +45,6 @@ fieldset{border:0;padding:0;margin:0 0 18px}legend{font-family:var(--display);fo
 .opt:has(input:checked){border-color:var(--blood);background:var(--blood-soft)}.opt input{margin-top:4px;accent-color:var(--blood)}
 .sus{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);margin:4px 0 0}
 .sus i{display:inline-block;height:6px;border-radius:3px;background:var(--blood);min-width:2px}
+.boot{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px;gap:4px}
+.boot h2{font-family:var(--display);font-weight:500;font-size:1.7rem;margin:0}
+.boot p{color:var(--muted);max-width:42ch;margin:0}
