@@ -11,6 +11,7 @@ const DATA = caso as unknown as CaseData;
 interface NpcSprite { id: string; sprite: Phaser.GameObjects.Sprite; place: string; path: [number, number][]; hidden: boolean }
 const CHARS = ["player", "marisa", "tomas", "lucia", "daniela", "rebeca", "aurelio"];
 const DOOR_OPEN = 29, DOOR_CLOSED = 30; // índices en tiles.png (ver README)
+const ROOF = 0x14272b; // el techo que tapa una casa hasta que entras en ella
 interface Target { kind: "item" | "npc" | "door"; id: string; label: string }
 
 export class WorldScene extends Phaser.Scene {
@@ -22,6 +23,7 @@ export class WorldScene extends Phaser.Scene {
   private npcs: Record<string, NpcSprite> = {};
   private items: Record<string, { x: number; y: number; sprite: Phaser.GameObjects.Text }> = {};
   private houses: Record<string, Phaser.Geom.Rectangle> = {};
+  private roofs: Record<string, Phaser.GameObjects.Rectangle> = {};
   private doors: Record<string, { x: number; y: number }> = {};
   private spots: Record<string, [number, number]> = {};
   private yard!: Phaser.Geom.Rectangle;
@@ -74,7 +76,9 @@ export class WorldScene extends Phaser.Scene {
       const prop = (n: string) => (o.properties as { name: string; value: string }[] | undefined)?.find((p) => p.name === n)?.value;
       if (o.type === "house") {
         this.houses[o.name] = new Phaser.Geom.Rectangle(o.x!, o.y!, o.width!, o.height!);
-        this.add.text(o.x! + o.width! / 2, o.y! + o.height! - 10, prop("label") ?? o.name, { fontFamily: "Work Sans, sans-serif", fontSize: "11px", color: "#ffffffcc" }).setOrigin(0.5);
+        this.roofs[o.name] = this.add.rectangle(o.x!, o.y!, o.width!, o.height!, ROOF)
+          .setOrigin(0).setDepth(20).setStrokeStyle(2, 0x0a1416);
+        this.add.text(o.x! + o.width! / 2, o.y! + o.height! - 10, prop("label") ?? o.name, { fontFamily: "Work Sans, sans-serif", fontSize: "11px", color: "#ffffffcc" }).setOrigin(0.5).setDepth(22);
       } else if (o.type === "door") {
         this.doors[o.name] = { x: Math.floor(o.x! / T), y: Math.floor(o.y! / T) };
       } else if (o.type === "zone" && o.name === "yard") {
@@ -294,6 +298,14 @@ export class WorldScene extends Phaser.Scene {
       hint.textContent = this.target?.label ?? ""; hint.classList.toggle("on", !!this.target);
       act.disabled = !this.target; act.textContent = this.target ? ({ npc: "💬", door: "🔓", item: "🔍" })[this.target.kind] : "·";
     }
+    // Las casas están tapadas hasta que entras: por fuera solo sabes si la puerta está
+    // abierta, que es justo la información con la que se juega.
+    const zone = this.zoneOf(this.player.x, this.player.y), fade = 1 - Math.exp(-10 * dt);
+    for (const id in this.roofs) {
+      const roof = this.roofs[id];
+      roof.alpha = Phaser.Math.Linear(roof.alpha, zone === id ? 0 : 1, fade);
+    }
+
     // Noche: oscurece todo y abre un círculo de luz alrededor del jugador
     const dark = this.director.darkness();
     this.night.clear();

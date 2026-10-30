@@ -61,6 +61,8 @@ src/
 
 ## Reglas del juego (resumen)
 
+- Desde la calle no ves el interior de una casa: solo si su puerta está abierta o cerrada,
+  que es lo que te dice si el dueño está dentro. El techo se desvanece al entrar.
 - Registrar un objeto cuesta 15 min; preguntar 10; forzar una puerta 20; esperar 60.
 - Si un vecino te ve registrando en su casa: +25 desconfianza. Forzando una puerta: +30.
 - A 60 de desconfianza dejan de hablarte; a 70, Marisa limpia su casa y pierdes dos pruebas.
