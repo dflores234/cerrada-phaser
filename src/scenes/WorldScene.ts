@@ -46,6 +46,10 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create() {
+    // Una escena reiniciada es el MISMO objeto: lo que no se reinicie a mano, se arrastra.
+    this.npcs = {}; this.items = {}; this.houses = {}; this.roofs = {}; this.doors = {}; this.spots = {};
+    this.clockAcc = 0; this.joy = { x: 0, y: 0 }; this.target = null;
+
     // ----- Director + UI -----
     const saved = this.loadState();
     this.hadSave = !!saved;
@@ -66,7 +70,9 @@ export class WorldScene extends Phaser.Scene {
     this.map.createLayer("decoracion", tiles, 0, 0)!.setDepth(5);
     // Animaciones de caminar: 3 frames por dirección (abajo, izquierda, derecha, arriba)
     for (const c of CHARS) ["down", "left", "right", "up"].forEach((dir, i) => {
-      this.anims.create({ key: `${c}-${dir}`, frames: this.anims.generateFrameNumbers("char_" + c, { start: i * 3, end: i * 3 + 2 }), frameRate: 8, repeat: -1, yoyo: true });
+      const key = `${c}-${dir}`;
+      if (this.anims.exists(key)) return; // al reiniciar la escena ya están creadas
+      this.anims.create({ key, frames: this.anims.generateFrameNumbers("char_" + c, { start: i * 3, end: i * 3 + 2 }), frameRate: 8, repeat: -1, yoyo: true });
     });
     const col = this.map.getLayer("colision")!.data;
     this.blocked = new Set();
@@ -107,10 +113,12 @@ export class WorldScene extends Phaser.Scene {
     this.snapNpcs();
 
     // ----- Noche -----
-    const g = this.textures.createCanvas("light", 320, 320)!;
-    const ctx = g.context, grad = ctx.createRadialGradient(160, 160, 10, 160, 160, 160);
-    grad.addColorStop(0, "rgba(0,0,0,1)"); grad.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = grad; ctx.fillRect(0, 0, 320, 320); g.refresh();
+    if (!this.textures.exists("light")) {
+      const g = this.textures.createCanvas("light", 320, 320)!;
+      const ctx = g.context, grad = ctx.createRadialGradient(160, 160, 10, 160, 160, 160);
+      grad.addColorStop(0, "rgba(0,0,0,1)"); grad.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, 320, 320); g.refresh();
+    }
     this.night = this.add.renderTexture(0, 0, this.map.widthInPixels, this.map.heightInPixels).setOrigin(0).setDepth(50);
 
     // ----- Cámara y entrada -----
@@ -257,13 +265,13 @@ export class WorldScene extends Phaser.Scene {
     };
     $("bNotes").onclick = () => { if (!this.ui.paused) this.ui.notes(() => this.reset()); };
     $("bAccuse").onclick = () => { if (!this.ui.paused) this.ui.accuse(); };
-    $("act").addEventListener("pointerdown", (e) => { e.preventDefault(); this.interact(); });
+    $("act").onpointerdown = (e) => { e.preventDefault(); this.interact(); };
     const stick = $("stick"), knob = $("knob"); let sid: number | null = null;
     const set = (dx: number, dy: number) => { const r = 38, l = Math.hypot(dx, dy) || 1, k = Math.min(l, r); dx = dx / l * k; dy = dy / l * k; knob.style.transform = `translate(${dx}px,${dy}px)`; this.joy = { x: dx / r, y: dy / r }; };
-    stick.addEventListener("pointerdown", (e) => { sid = e.pointerId; stick.setPointerCapture(sid); const b = stick.getBoundingClientRect(); set(e.clientX - b.left - 60, e.clientY - b.top - 60); });
-    stick.addEventListener("pointermove", (e) => { if (e.pointerId !== sid) return; const b = stick.getBoundingClientRect(); set(e.clientX - b.left - 60, e.clientY - b.top - 60); });
+    stick.onpointerdown = (e) => { sid = e.pointerId; stick.setPointerCapture(sid); const b = stick.getBoundingClientRect(); set(e.clientX - b.left - 60, e.clientY - b.top - 60); };
+    stick.onpointermove = (e) => { if (e.pointerId !== sid) return; const b = stick.getBoundingClientRect(); set(e.clientX - b.left - 60, e.clientY - b.top - 60); };
     const end = (e: PointerEvent) => { if (e.pointerId !== sid) return; sid = null; this.joy = { x: 0, y: 0 }; knob.style.transform = ""; };
-    stick.addEventListener("pointerup", end); stick.addEventListener("pointercancel", end);
+    stick.onpointerup = end; stick.onpointercancel = end;
   }
   private renderHud() {
     const d = this.director, c = document.getElementById("clock")!;
