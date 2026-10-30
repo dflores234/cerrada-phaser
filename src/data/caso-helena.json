@@ -68,7 +68,7 @@
       "questions": [
         { "id": "q_t1", "q": "¿Dónde estabas a las once y media?", "a": ["En la casa. Dormido.", "*No te mira al decirlo."] },
         { "id": "q_t2", "q": "¿Helena tenía problemas con alguien?", "a": ["Estaba obsesionada con «hacer lo correcto».", "Me preguntó si conocía a algún abogado en Querétaro."] },
-        { "id": "q_t3", "q": "Sé lo de Daniela.", "needs": "mensajes", "a": ["*Se derrumba en la silla.", "Estaba con ella. En el coche, en el parque, de las once y cuarto hasta casi la una.", "No la maté, Inés."], "press": ["*Te mira con odio.", "Helena guardaba una copia de su carta en el cajón del escritorio. Hablaba de Marisa. Tómala y déjame en paz."] }
+        { "id": "q_t3", "q": "Sé lo de Daniela.", "needs": "mensajes", "a": ["*Se derrumba en la silla.", "Estaba con ella. En el coche, en el parque, de las once y cuarto hasta casi la una.", "No la maté, Inés."], "press": ["*Te mira con odio.", "Helena guardaba en el cajón del escritorio lo que tenía reunido sobre Marisa. Fuérzalo y déjame en paz."] }
       ] },
     "lucia": { "name": "Lucía Ferrer", "role": "Casa 2. La enfermera.", "color": "a8c7a0", "schedule": [[480,"home"],[780,"park2"],[900,"home"]],
       "questions": [
@@ -79,7 +79,7 @@
     "daniela": { "name": "Daniela Robles", "role": "Casa 4. La divorciada.", "color": "c98a8a", "schedule": [[480,"home"],[720,"away"],[840,"home"],[1385,"park2"],[1500,"home"]],
       "questions": [
         { "id": "q_d1", "q": "¿Viste algo esa noche?", "a": ["Nada. Me fui a dormir temprano.", "Y no me mires así."] },
-        { "id": "q_d2", "q": "Estabas con Tomás en el parque.", "needs": "mensajes", "a": ["*Enciende un cigarro.", "Sí. Juzga lo que quieras.", "Volví por un suéter como a las doce menos diez y vi a alguien cerrar la reja de Helena. Con chal oscuro. Caminó hacia la casa de Marisa."], "press": ["*Apaga el cigarro en la mesa.", "Era el chal gris de Marisa. El de las cenas. Ahora lárgate."] }
+        { "id": "q_d2", "q": "Estabas con Tomás en el parque.", "needs": "mensajes", "a": ["*Enciende un cigarro.", "Sí. Juzga lo que quieras.", "Volví por un suéter como a las doce y cinco y vi a alguien cerrar la reja de Helena. Con chal oscuro. Caminó hacia la casa de Marisa."], "press": ["*Apaga el cigarro en la mesa.", "Era el chal gris de Marisa. El de las cenas. Ahora lárgate."] }
       ] },
     "rebeca": { "name": "Rebeca Sáenz", "role": "Casa 5. La nueva.", "color": "b9a0d6", "schedule": [[480,"home"],[960,"street"],[1020,"home"]],
       "questions": [
@@ -91,7 +91,7 @@
       "questions": [
         { "id": "q_a1", "q": "¿Cómo la encontraste?", "a": ["Llegué a las seis, por la reja de atrás. Estaba boca abajo, con la bata puesta."] },
         { "id": "q_a2", "q": "¿Notaste algo raro en el patio?", "a": ["La reja estaba abierta, y yo siempre la dejo con candado.", "Y había una copa en el pasto."], "press": ["*Baja la voz.", "Huellas de sandalia, con mi abono encima. Alguien pisó mi composta antes de entrar."] },
-        { "id": "q_a3", "q": "¿Quién usa guantes de jardín en la Cerrada?", "needs": "reja", "a": ["Solo la señora Marisa. Dice que las rosas son suyas."], "press": ["El domingo en la mañana la vi regar su jardín con cloro. ¿Quién riega con cloro?"] }
+        { "id": "q_a3", "q": "¿Quién usa guantes de jardín en la Cerrada?", "needs": "reja", "a": ["Solo la señora Marisa. Dice que las rosas son suyas."], "press": ["Me pidió cloro la semana pasada. Para las hormigas, dijo. Llevo ocho años en ese jardín y nunca ha tenido hormigas."] }
       ] }
   },
   "events": [
