@@ -1,0 +1,108 @@
+{
+  "id": "caso-helena",
+  "title": "Lo que esconde la Cerrada",
+  "startMinute": 480,
+  "endMinute": 1800,
+  "culprit": "marisa",
+  "solution": { "how": "drug", "why": "secret" },
+  "howOptions": [
+    { "id": "push", "label": "La empujó a la alberca después de una discusión" },
+    { "id": "drug", "label": "La drogó en la cena con un sedante robado, la golpeó y la dejó en el agua" },
+    { "id": "poison", "label": "La envenenó con una botella de vino que le regaló" }
+  ],
+  "whyOptions": [
+    { "id": "jealous", "label": "Celos: Helena se interponía en una relación" },
+    { "id": "money", "label": "Dinero: la herencia y el seguro" },
+    { "id": "secret", "label": "Helena iba a denunciar que la muerte de Ernesto Lara no fue un accidente" },
+    { "id": "blackmail", "label": "Helena la chantajeaba con un secreto profesional" }
+  ],
+  "clues": {
+    "copa": { "title": "Una copa ajena", "text": "Junto a la alberca había una copa de cristal tallado con el monograma «M·O». No es de la vajilla de Helena.", "key": true },
+    "forense": { "title": "Informe preliminar", "text": "Golpe en la nuca y midazolam en la sangre. Helena estaba dormida o casi cuando cayó al agua.", "key": true },
+    "reja": { "title": "La reja trasera", "text": "El candado estaba abierto. Huellas de suela de jardín con tierra de abono." },
+    "sobre": { "title": "Un sobre vacío", "text": "Un sobre rasgado dirigido a la Fiscalía del Estado, Unidad de Homicidios. La carta no está." },
+    "recorte": { "title": "Recorte de 2014", "text": "Querétaro, 2014: el empresario Ernesto Lara muere al caer por las escaleras. Su esposa, Marisa Lara, de soltera Ocampo, lo encontró.", "key": true },
+    "vitrina": { "title": "Falta una copa", "text": "El juego «M·O» de Marisa está incompleto: once de doce." },
+    "ceniza": { "title": "Papel en la chimenea", "text": "Con letra de Helena: «…Ernesto no se cayó. Tengo pruebas de que M…». Alguien quemó la carta.", "key": true },
+    "guantes": { "title": "Guantes húmedos", "text": "Guantes de jardín que huelen a cloro y sandalias con tierra de abono." },
+    "ampolleta": { "title": "La ampolleta que falta", "text": "El inventario del maletín de Lucía marca una ampolleta de midazolam faltante desde la noche de la cena." },
+    "suspension": { "title": "El secreto de Lucía", "text": "Lucía fue suspendida del hospital hace un año. Helena lo sabía y nunca lo contó." },
+    "mensajes": { "title": "Mensajes de Daniela", "text": "«Estaciona en el parque. 11:15. No tardes.» El contacto se llama «T.»" },
+    "ventana": { "title": "La ventana de Daniela", "text": "Desde su segundo piso se ve la reja trasera de Helena y el andador hacia la casa 1." },
+    "video": { "title": "La cámara del timbre", "text": "23:34: una figura con chal oscuro abre la reja trasera de Helena. 23:52 sale y camina hacia la casa 1.", "key": true },
+    "hermanas": { "title": "Una foto vieja", "text": "Dos niñas. Al reverso: «Rebe y Helena, 1991»." },
+    "testigo": { "title": "Lo viste con tus propios ojos", "text": "Cerca de medianoche, Marisa cruzó al patio de Helena y se agachó junto a la alberca, donde estaba la copa.", "key": true },
+    "parque": { "title": "El parque de noche", "text": "Viste a Tomás y a Daniela juntos en el parque de madrugada. Su coartada es real." }
+  },
+  "items": {
+    "copa": { "label": "La copa junto a la alberca", "text": "Cristal tallado, pesado, caro. En la base: «M·O».", "gone": "Aquí había algo en el pasto. Ya no está." },
+    "forense": { "label": "El informe en la mesa del patio", "text": "Alguien subrayó con pluma: «contusión occipital» y «midazolam: positivo»." },
+    "reja": { "label": "La reja trasera", "text": "El candado cuelga abierto. Suela gruesa de jardín, con tierra de abono." },
+    "sobre": { "label": "El escritorio de Helena", "text": "Todo en orden, salvo un sobre rasgado: «Fiscalía del Estado». Vacío." },
+    "recorte": { "label": "El cajón con llave", "needs": ["sobre", "p_q_t3"], "lock": "Está cerrado. Primero necesitas una razón para forzarlo.", "text": "Lo fuerzas con un abrecartas. Adentro, un recorte de periódico doblado con cuidado." },
+    "vitrina": { "label": "La vitrina del comedor", "text": "Marisa presume su juego de copas de bodas. Las cuentas dos veces. Once." },
+    "ceniza": { "label": "La chimenea", "text": "Nadie prende la chimenea en octubre. Hay ceniza fresca y un papel que no terminó de arder.", "gone": "La chimenea está limpia. Demasiado limpia." },
+    "guantes": { "label": "El cuarto de lavado", "text": "Guantes de jardín húmedos. Huelen a cloro.", "gone": "La lavadora acaba de terminar un ciclo." },
+    "ampolleta": { "label": "El maletín de Lucía", "text": "Una línea tachada con fuerza: «Midazolam 5 mg — 1 faltante (sáb.)»." },
+    "suspension": { "label": "Cartas sobre la mesa", "text": "Carta del hospital: suspensión indefinida. Encima, una nota de Helena: «Tu secreto está a salvo conmigo»." },
+    "mensajes": { "label": "Un teléfono en el sillón", "text": "La pantalla se enciende con una notificación vieja que nadie borró." },
+    "ventana": { "label": "La ventana", "text": "Desde aquí se ve todo: la reja de Helena, la alberca y el andador hacia la casa 1." },
+    "video": { "label": "La cámara del timbre", "needs": ["q_rebeca_cam"], "lock": "Es la cámara de Rebeca. Primero pídele permiso.", "text": "Apunta, por casualidad, hacia la reja trasera de Helena." },
+    "hermanas": { "label": "Las cajas de mudanza", "text": "Una caja llena de fotos. Una se te queda en la mano más de lo necesario." }
+  },
+  "houses": {
+    "marisa": { "owner": "marisa" }, "lucia": { "owner": "lucia" }, "helena": { "owner": "tomas" },
+    "daniela": { "owner": "daniela" }, "rebeca": { "owner": "rebeca" }
+  },
+  "npcs": {
+    "marisa": { "name": "Marisa Ocampo", "role": "Casa 1. La anfitriona.", "color": "d9b26a", "schedule": [[480,"home"],[600,"away"],[690,"home"],[840,"park"],[900,"home"],[1420,"pool"],[1448,"home"]],
+      "questions": [
+        { "id": "q_m1", "q": "¿Cómo estaba Helena en la cena?", "a": ["Rara. Distante. Casi no tocó su vino.", "Se fue temprano, como a las once."] },
+        { "id": "q_m2", "q": "¿A qué hora te dormiste?", "a": ["A las once y media, en cuanto lavé los platos.", "Mi esposo puede confirmarlo. Bueno… él duerme con tapones."] },
+        { "id": "q_m3", "q": "Encontré una de tus copas junto a la alberca.", "needs": "copa", "a": ["*Pausa larga.", "Helena se la llevó. Siempre se llevaba lo que no era suyo."], "press": ["*Se le endurece la boca.", "Cuídate, Inés. Las que escarban en jardines ajenos acaban enterradas en ellos."] },
+        { "id": "q_m4", "q": "¿Quién era Ernesto Lara?", "needs": "recorte", "a": ["*El color se le va de la cara.", "Mi primer esposo. Murió. Fue un accidente."], "press": ["*Se le quiebra la voz.", "Helena ya me hizo esa pregunta. En el postre, delante de todos. Ya no está para repetirla."] },
+        { "id": "q_m5", "q": "¿Por qué tus guantes huelen a cloro?", "needs": "guantes", "a": ["Lavo el patio con cloro, Inés.", "*Sonríe sin mover los ojos.", "Creo que ya deberías irte."] },
+        { "id": "q_m6", "q": "Te vi anoche en el patio de Helena.", "needs": "testigo", "a": ["Fui a recoger lo que era mío.", "Tú también deberías cuidar lo que es tuyo."] }
+      ] },
+    "tomas": { "name": "Tomás Vidal", "role": "Casa 3. El viudo.", "color": "8aa6c7", "schedule": [[480,"home"],[660,"park"],[780,"home"],[1380,"park"],[1500,"home"]],
+      "questions": [
+        { "id": "q_t1", "q": "¿Dónde estabas a las once y media?", "a": ["En la casa. Dormido.", "*No te mira al decirlo."] },
+        { "id": "q_t2", "q": "¿Helena tenía problemas con alguien?", "a": ["Estaba obsesionada con «hacer lo correcto».", "Me preguntó si conocía a algún abogado en Querétaro."] },
+        { "id": "q_t3", "q": "Sé lo de Daniela.", "needs": "mensajes", "a": ["*Se derrumba en la silla.", "Estaba con ella. En el coche, en el parque, de las once y cuarto hasta casi la una.", "No la maté, Inés."], "press": ["*Te mira con odio.", "Helena guardaba una copia de su carta en el cajón del escritorio. Hablaba de Marisa. Tómala y déjame en paz."] }
+      ] },
+    "lucia": { "name": "Lucía Ferrer", "role": "Casa 2. La enfermera.", "color": "a8c7a0", "schedule": [[480,"home"],[780,"park2"],[900,"home"]],
+      "questions": [
+        { "id": "q_l1", "q": "¿Helena tomaba algún medicamento?", "a": ["No, que yo sepa. Ni aspirinas."] },
+        { "id": "q_l2", "q": "Helena tenía midazolam en la sangre.", "needs": "forense", "a": ["*Le tiemblan las manos.", "Eso… eso es lo que yo uso en el trabajo."] },
+        { "id": "q_l3", "q": "A tu maletín le falta una ampolleta.", "needs": "ampolleta", "a": ["Lo dejé en el recibidor de Marisa toda la cena.", "Me suspendieron hace un año. Helena era la única que lo sabía."], "press": ["*Llora sin ruido.", "Marisa fue la única que pasó al recibidor sola, cuando trajo el postre."] }
+      ] },
+    "daniela": { "name": "Daniela Robles", "role": "Casa 4. La divorciada.", "color": "c98a8a", "schedule": [[480,"home"],[720,"away"],[840,"home"],[1385,"park2"],[1500,"home"]],
+      "questions": [
+        { "id": "q_d1", "q": "¿Viste algo esa noche?", "a": ["Nada. Me fui a dormir temprano.", "Y no me mires así."] },
+        { "id": "q_d2", "q": "Estabas con Tomás en el parque.", "needs": "mensajes", "a": ["*Enciende un cigarro.", "Sí. Juzga lo que quieras.", "Volví por un suéter como a las doce menos diez y vi a alguien cerrar la reja de Helena. Con chal oscuro. Caminó hacia la casa de Marisa."], "press": ["*Apaga el cigarro en la mesa.", "Era el chal gris de Marisa. El de las cenas. Ahora lárgate."] }
+      ] },
+    "rebeca": { "name": "Rebeca Sáenz", "role": "Casa 5. La nueva.", "color": "b9a0d6", "schedule": [[480,"home"],[960,"street"],[1020,"home"]],
+      "questions": [
+        { "id": "q_r1", "q": "¿Por qué te mudaste a la Cerrada?", "a": ["Por la tranquilidad.", "*Lo dice sin una gota de ironía."] },
+        { "id": "q_rebeca_cam", "q": "¿Tu cámara del timbre graba la calle?", "a": ["Graba todo. La policía ni siquiera preguntó.", "Revísala tú. Está en la entrada."] },
+        { "id": "q_r3", "q": "Eras hermana de Helena.", "needs": "hermanas", "a": ["Media hermana. No nos hablábamos desde hace quince años.", "*Se le quiebra la voz.", "No alcancé."], "press": ["Helena me escribió hace un mes. Decía que tenía miedo de «la vecina perfecta»."] }
+      ] },
+    "aurelio": { "name": "Aurelio, el jardinero", "role": "Encontró el cuerpo.", "color": "c7b299", "noHouse": true, "schedule": [[480,"yardwork"],[720,"park"],[900,"street"],[1080,"away"]],
+      "questions": [
+        { "id": "q_a1", "q": "¿Cómo la encontraste?", "a": ["Llegué a las seis, por la reja de atrás. Estaba boca abajo, con la bata puesta."] },
+        { "id": "q_a2", "q": "¿Notaste algo raro en el patio?", "a": ["La reja estaba abierta, y yo siempre la dejo con candado.", "Y había una copa en el pasto."], "press": ["*Baja la voz.", "Huellas de sandalia, con mi abono encima. Alguien pisó mi composta antes de entrar."] },
+        { "id": "q_a3", "q": "¿Quién usa guantes de jardín en la Cerrada?", "needs": "reja", "a": ["Solo la señora Marisa. Dice que las rosas son suyas."], "press": ["El domingo en la mañana la vi regar su jardín con cloro. ¿Quién riega con cloro?"] }
+      ] }
+  },
+  "events": [
+    { "id": "copa_gone", "at": 1445, "type": "removeItem", "item": "copa" },
+    { "id": "testigo", "from": 1420, "to": 1460, "type": "witness", "npcs": ["marisa"], "zone": "yard", "radius": 9, "clue": "testigo",
+      "title": "Medianoche", "text": "Marisa cruza el patio de Helena con una bolsa de tela. No prende ninguna luz. Se agacha junto a la alberca y se queda ahí un momento, de espaldas a ti." },
+    { "id": "parque", "from": 1385, "to": 1500, "type": "witness", "npcs": ["tomas", "daniela"], "zone": "out", "radius": 7, "clue": "parque",
+      "title": "El parque, de madrugada", "text": "Dos sombras en la banca, muy juntas. Tomás y Daniela. No hablan; solo fuman." }
+  ],
+  "cleanup": { "npc": "marisa", "threshold": 70, "items": ["guantes", "ceniza"], "toast": "Marisa pasó toda la tarde limpiando su casa." },
+  "costs": { "examine": 15, "ask": 10, "press": 10, "force": 20, "wait": 60 },
+  "suspicion": { "seenSearching": 25, "seenForcing": 30, "confront": 12, "press": 30, "refuseAt": 60 },
+  "honor": { "start": 50, "pressCost": 15 }
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Lo que esconde la Cerrada</title>
+<link rel="stylesheet" href="/src/ui/ui.css">
+</head>
+<body>
+<div id="game"></div>
+<div class="hud">
+  <div class="clock" id="clock"></div>
+  <div class="btns">
+    <button id="bWait">Esperar 1 h</button>
+    <button id="bNotes">Cuaderno</button>
+    <button id="bAccuse">Acusar</button>
+  </div>
+</div>
+<div class="hint" id="hint"></div>
+<div class="toast" id="toast"></div>
+<div class="stick" id="stick"><div class="knob" id="knob"></div></div>
+<button class="act" id="act" aria-label="Interactuar">·</button>
+<div class="ov" id="ov" role="dialog" aria-modal="true"><div class="card" id="card"></div></div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
