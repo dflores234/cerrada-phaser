@@ -22,6 +22,7 @@ public/assets/
   map.json        Mapa en formato Tiled (ábrelo en Tiled y edítalo ahí)
   tiles.png       Tileset pixel art de 32 px, 16 columnas: pasto, calle, muros, ventanas, muebles, árboles, coches
   char_*.png      Sprites de personajes: 3 frames x 4 direcciones (abajo, izquierda, derecha, arriba)
+  patrulla.png    Patrulla vista desde arriba, 32x64, mirando al norte
 src/
   core/           Lógica del juego, independiente de Phaser
     types.ts        Tipos del caso y del estado
@@ -62,6 +63,7 @@ src/
 
 ## Reglas del juego (resumen)
 
+- Inés vive en la casa 6 y empieza dentro. Al salir, las últimas patrullas se van de la Cerrada.
 - Desde la calle no ves el interior de una casa: solo si su puerta está abierta o cerrada,
   que es lo que te dice si el dueño está dentro. El techo se desvanece al entrar.
 - Registrar un objeto cuesta 15 min; preguntar 10; forzar una puerta 20; esperar 60.

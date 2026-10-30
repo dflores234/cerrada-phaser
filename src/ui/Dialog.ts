@@ -50,8 +50,8 @@ ${changes.length
 
   intro() {
     this.open(`<h2>Helena Vidal no se ahogó sola</h2>
-<p>El sábado, las cinco casas de la Cerrada de los Almendros cenaron en casa de Marisa Ocampo. El domingo a las 6:10, el jardinero encontró a Helena flotando en su alberca. La policía ya decidió: accidente.</p>
-<p>Tú eres Inés, su mejor amiga. Sabes que Helena casi no bebía.</p>
+<p>El sábado, la Cerrada de los Almendros entera cenó en casa de Marisa Ocampo. El domingo a las 6:10, el jardinero encontró a Helena flotando en su alberca. La policía ya decidió: accidente.</p>
+<p>Tú eres Inés, de la casa 6: su vecina y su mejor amiga. Sabes que Helena casi no bebía.</p>
 <p>Tienes hasta el lunes a las 6:00. Recorre la Cerrada, entra a las casas y registra lo que encuentres. Las pistas abren preguntas nuevas.</p>
 <p class="sub">Cada vecino tiene su rutina. Si están en casa te abren la puerta; si te ven husmeando, dejan de hablarte. Si no están, puedes forzar la puerta mientras nadie te vea. Puedes preguntar con calma o presionar: saca más verdad, pero cada vez te pareces más a ellos.</p>
 <p class="sub">Celular: joystick a la izquierda, botón a la derecha. Computadora: flechas o WASD, E o Espacio para interactuar.</p>

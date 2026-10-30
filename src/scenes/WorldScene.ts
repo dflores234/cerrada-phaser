@@ -149,12 +149,13 @@ export class WorldScene extends Phaser.Scene {
    */
   private patrullas() {
     const CARRIL = 25; // carril de subida hacia la salida; la línea central va por x=23
-    for (const [fila, retraso] of [[7, 0], [12, 500], [17, 1100]] as const) {
+    // Esperan paradas a que Inés salga de casa: desde dentro no se ve la calle.
+    for (const [fila, retraso] of [[24, 4000], [28, 6000], [32, 8500]] as const) {
       const y = fila * T + T / 2;
       const coche = this.add.image(CARRIL * T + T / 2, y, "patrulla").setDepth(9);
       this.tweens.add({
         targets: coche, y: -T * 2, delay: retraso,
-        duration: (y + T * 2) / 110 * 1000, // misma velocidad para las tres, no el mismo tiempo
+        duration: (y + T * 2) / 140 * 1000, // misma velocidad para las tres, no el mismo tiempo
         ease: "Sine.easeIn",
         onComplete: () => coche.destroy(),
       });
