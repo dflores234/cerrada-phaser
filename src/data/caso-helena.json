@@ -29,7 +29,7 @@
     "suspension": { "title": "El secreto de Lucía", "text": "Lucía fue suspendida del hospital hace un año. Helena lo sabía y nunca lo contó." },
     "mensajes": { "title": "Mensajes de Daniela", "text": "«Estaciona en el parque. 11:15. No tardes.» El contacto se llama «T.»" },
     "ventana": { "title": "La ventana de Daniela", "text": "Desde su segundo piso se ve la reja trasera de Helena y el andador hacia la casa 1." },
-    "video": { "title": "La cámara del timbre", "text": "23:34: una figura con chal oscuro abre la reja trasera de Helena. 23:52 sale y camina hacia la casa 1.", "key": true },
+    "video": { "title": "La cámara del timbre", "text": "00:09, lejos y granulado: una figura con chal oscuro sube por la acera desde el lado de la casa 3 y se mete en la casa 1. No vuelve a salir.", "key": true },
     "hermanas": { "title": "Una foto vieja", "text": "Dos niñas. Al reverso: «Rebe y Helena, 1991»." },
     "testigo": { "title": "Lo viste con tus propios ojos", "text": "Cerca de medianoche, Marisa cruzó al patio de Helena y se agachó junto a la alberca, donde estaba la copa.", "key": true },
     "parque": { "title": "El parque de noche", "text": "Viste a Tomás y a Daniela juntos en el parque de madrugada. Su coartada es real." }
@@ -47,7 +47,7 @@
     "suspension": { "label": "Cartas sobre la mesa", "text": "Carta del hospital: suspensión indefinida. Encima, una nota de Helena: «Tu secreto está a salvo conmigo»." },
     "mensajes": { "label": "Un teléfono en el sillón", "text": "La pantalla se enciende con una notificación vieja que nadie borró." },
     "ventana": { "label": "La ventana", "text": "Desde aquí se ve todo: la reja de Helena, la alberca y el andador hacia la casa 1." },
-    "video": { "label": "La cámara del timbre", "needs": ["q_rebeca_cam"], "lock": "Es la cámara de Rebeca. Primero pídele permiso.", "text": "Apunta, por casualidad, hacia la reja trasera de Helena." },
+    "video": { "label": "La cámara del timbre", "needs": ["q_rebeca_cam"], "lock": "Es la cámara de Rebeca. Primero pídele permiso.", "text": "Apunta a la calle, no a su puerta: el tramo de acera que sube hacia las casas 1 y 3." },
     "hermanas": { "label": "Las cajas de mudanza", "text": "Una caja llena de fotos. Una se te queda en la mano más de lo necesario." }
   },
   "houses": {
