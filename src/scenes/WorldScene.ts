@@ -43,6 +43,7 @@ export class WorldScene extends Phaser.Scene {
     this.load.image("tiles", "assets/tiles.png");
     this.load.tilemapTiledJSON("map", "assets/map.json");
     for (const c of CHARS) this.load.spritesheet("char_" + c, `assets/char_${c}.png`, { frameWidth: 32, frameHeight: 32 });
+    this.load.image("patrulla", "assets/patrulla.png");
   }
 
   create() {
@@ -112,6 +113,9 @@ export class WorldScene extends Phaser.Scene {
     }
     this.snapNpcs();
 
+    // ----- Las últimas patrullas, yéndose -----
+    if (this.director.state.time < DATA.startMinute + 15) this.patrullas();
+
     // ----- Noche -----
     if (!this.textures.exists("light")) {
       const g = this.textures.createCanvas("light", 320, 320)!;
@@ -137,6 +141,24 @@ export class WorldScene extends Phaser.Scene {
     if (this.director.state.ended) this.ui.ending(this.director.state.ended, () => this.reset());
     else if (this.hadSave) this.ui.resume(() => this.reset());
     else this.ui.intro();
+  }
+
+  /**
+   * La policía ya decidió que fue un accidente: lo primero que ve Inés al salir es
+   * cómo se van las últimas patrullas. Son decoración, no estorban ni se pueden tocar.
+   */
+  private patrullas() {
+    const CARRIL = 25; // carril de subida hacia la salida; la línea central va por x=23
+    for (const [fila, retraso] of [[7, 0], [12, 500], [17, 1100]] as const) {
+      const y = fila * T + T / 2;
+      const coche = this.add.image(CARRIL * T + T / 2, y, "patrulla").setDepth(9);
+      this.tweens.add({
+        targets: coche, y: -T * 2, delay: retraso,
+        duration: (y + T * 2) / 110 * 1000, // misma velocidad para las tres, no el mismo tiempo
+        ease: "Sine.easeIn",
+        onComplete: () => coche.destroy(),
+      });
+    }
   }
 
   // ---------- Helpers ----------
